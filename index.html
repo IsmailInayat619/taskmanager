@@ -10,8 +10,44 @@
             font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
             margin: 0;
             background: linear-gradient(135deg, #e0e7ff 0%, #f4f4f4 100%);
+            /* Add a decorative SVG background */
+            background-image: url('https://www.transparenttextures.com/patterns/diamond-upholstery.png'), linear-gradient(135deg, #e0e7ff 0%, #f4f4f4 100%);
             color: #222;
             min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(90deg, #5b7cff 60%, #43d67c 100%);
+            padding: 32px 0 24px 0;
+            border-radius: 0 0 32px 32px;
+            box-shadow: 0 8px 32px rgba(60, 80, 180, 0.13);
+            text-align: center;
+            position: relative;
+        }
+        .header img.logo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid #fff;
+            box-shadow: 0 2px 12px rgba(60, 80, 180, 0.15);
+            margin-bottom: 10px;
+            background: #fff;
+        }
+        .header h1 {
+            color: #fff;
+            font-size: 2.5em;
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: 2px;
+            text-shadow: 0 2px 8px #3a5ad9;
+        }
+        .header .hero-img {
+            width: 100%;
+            max-width: 340px;
+            margin: 18px auto 0 auto;
+            display: block;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(60, 80, 180, 0.13);
         }
 
         .container {
@@ -128,7 +164,9 @@
             justify-content: space-between;
             align-items: flex-start;
             box-shadow: 0 1.5px 8px rgba(60, 80, 180, 0.07);
-            border-left: 5px solid #5b7cff;
+            border-left: 8px solid #5b7cff;
+            /* Add a subtle gradient border effect */
+            border-image: linear-gradient(to bottom, #5b7cff, #43d67c) 1 100%;
             transition: box-shadow 0.2s, border-color 0.2s;
             position: relative;
         }
@@ -136,7 +174,8 @@
             text-decoration: line-through;
             opacity: 0.7;
             background: linear-gradient(90deg, #e6f7e6 80%, #d4edda 100%);
-            border-left: 5px solid #28a745;
+            border-left: 8px solid #28a745;
+            border-image: linear-gradient(to bottom, #28a745, #43d67c) 1 100%;
         }
         .task-item:hover {
             box-shadow: 0 4px 18px rgba(60, 80, 180, 0.13);
@@ -166,7 +205,7 @@
             background: linear-gradient(90deg, #28a745 60%, #43d67c 100%);
             color: white;
             padding: 7px 16px;
-            border: none;
+            border: 2px solid #fff;
             border-radius: 5px;
             cursor: pointer;
             font-size: 1em;
@@ -177,11 +216,13 @@
         }
         .task-actions button.delete {
             background: linear-gradient(90deg, #dc3545 60%, #ff6b81 100%);
+            border: 2px solid #fff;
         }
         .task-actions button:disabled {
             background: #bfc9d9;
             color: #fff;
             cursor: not-allowed;
+            border: 2px solid #e0e7ff;
         }
         .task-actions button:hover:not(:disabled) {
             opacity: 0.95;
@@ -219,12 +260,26 @@
                 margin-right: 0;
             }
         }
+
+        .footer {
+            text-align: center;
+            padding: 18px 0 10px 0;
+            color: #fff;
+            background: linear-gradient(90deg, #5b7cff 60%, #43d67c 100%);
+            border-radius: 24px 24px 0 0;
+            font-size: 1.08em;
+            margin-top: 40px;
+            box-shadow: 0 -2px 12px rgba(60, 80, 180, 0.08);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
+        <img class="logo" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Task Manager Logo">
         <h1>Task Manager</h1>
-
+        <img class="hero-img" src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80" alt="Productivity Hero">
+    </div>
+    <div class="container">
         <div class="task-form-section">
             <h2>Add New Task</h2>
             <form id="taskForm">
@@ -291,6 +346,9 @@
             <div id="taskList">
                 </div>
         </div>
+    </div>
+    <div class="footer">
+        &copy; 2024 Task Manager. All rights reserved.
     </div>
 
     <script>
@@ -368,13 +426,29 @@
 
                 const dueDate = task.dueDate ? new Date(task.dueDate).toLocaleString() : 'No due date';
 
+                // Task type icons
+                const typeIcons = {
+                    home: '🏠',
+                    school: '🎓',
+                    work: '💼',
+                    project1: '🗂️',
+                    project2: '📁'
+                };
+                // Priority icons
+                const priorityIcons = {
+                    urgent: '⏰',
+                    high: '⚡',
+                    med: '🔵',
+                    low: '🟢'
+                };
+
                 taskItem.innerHTML = `
                     <div class="task-details">
                         <h3>${task.title}</h3>
                         <p>${task.description || 'No description'}</p>
                         <p><strong>Due Date:</strong> ${dueDate}</p>
-                        <p><strong>Type:</strong> ${task.taskType}</p>
-                        <p><strong>Priority:</strong> <span class="priority-${task.priority}">${task.priority}</span></p>
+                        <p><strong>Type:</strong> <span class="task-type-icon">${typeIcons[task.taskType] || ''}</span>${task.taskType}</p>
+                        <p><strong>Priority:</strong> <span class="priority-icon">${priorityIcons[task.priority] || ''}</span><span class="priority-${task.priority}">${task.priority}</span></p>
                     </div>
                     <div class="task-actions">
                         <button class="complete-btn" data-id="${task.id}" ${task.completed ? 'disabled' : ''}>
